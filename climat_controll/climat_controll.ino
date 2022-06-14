@@ -111,7 +111,7 @@ float tempNowOutCar = 0.0; // текущее значение температу
 
 int speedFan = 0; // скорость вентилятора
 
-int rotateServoHot = 0;
+int rotateServoHot = -1; // положение заслонки тепло-холод
 
 struct {
   int AUTO_MODE_UPDATE_TIME = 2000; // время обновления авто-режима
@@ -231,6 +231,9 @@ void loop() {
     if (millis() - ztmr < 4000) return;
     ztmr = millis();
     digitalWrite(RELAY_SERVO_SIGNAL_BUS, HIGH);
+
+    rotateServoHot = -1;
+    
     initEnd = true;
   }
 }

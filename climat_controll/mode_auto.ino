@@ -1,4 +1,4 @@
-boolean manualFanSpeed = false;
+boolean manualFanSpeed = false; // need save this
 boolean manualServoHot = false;
 
 void setManualFanSpeed(boolean manual){
