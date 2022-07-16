@@ -1,17 +1,14 @@
-boolean manualFanSpeed = false; // need save this
-boolean manualServoHot = false;
-
-void setManualFanSpeed(boolean manual){
-  if(manualFanSpeed == manual) return;
-  manualFanSpeed = manual;
+/*void setManualFanSpeed(boolean manual){
+  if(setting.manualFanSpeed == manual) return;
+  setting.manualFanSpeed = manual;
   Serial.print("manualFanSpeed ");
-  Serial.println(manualFanSpeed);
+  Serial.println(setting.manualFanSpeed);
 }
 void setManualServoHot(boolean manual){
-  if(manualServoHot == manual) return;
-  manualServoHot = manual;
+  if(setting.manualServoHot == manual) return;
+  setting.manualServoHot = manual;
   Serial.print("manualServoHot ");
-  Serial.println(manualServoHot);
+  Serial.println(setting.manualServoHot);
 }
 
 //Прием команд в режиме auto
@@ -58,7 +55,7 @@ void autoMode() {
   servoTick++;
 
   getTemp();
-  if(!manualFanSpeed) {
+  if(!setting.manualFanSpeed) {
     if (setting.tempSet > tempNowCar && tempNowHeater < setting.tempMinStartWork){
       if(speedFan > 0) setSpeedFan(0, true);
       return;
@@ -85,7 +82,7 @@ void autoMode() {
     localSpeedFan = constrain(localSpeedFan, 0, maxSpeedFan);
     setSpeedFan(localSpeedFan);
   }
-  if(!manualServoHot && servoTick >= setting.servoTickCount){
+  if(!setting.manualServoHot && servoTick >= setting.servoTickCount){
     servoTick = 0;
     if(abs(setting.tempSet - tempNowCar) > setting.deadRotateServoHot){
       //Тепло-холод
@@ -106,8 +103,8 @@ void autoMode() {
 
 void getStatusModeAuto(){
   Serial.print("manualFanSpeed ");
-  Serial.println(manualFanSpeed);
+  Serial.println(setting.manualFanSpeed);
 
   Serial.print("manualServoHot ");
-  Serial.println(manualServoHot);
-}
+  Serial.println(setting.manualServoHot);
+}*/

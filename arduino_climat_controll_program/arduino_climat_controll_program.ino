@@ -1,16 +1,17 @@
-//Для датчиков температуры
-#include <OneWire.h>
-#include <DallasTemperature.h>
-//Для серво-мотора тепло-холод
-#include <Servo.h>
-#include <ServoSmooth.h>
-//Для CAN шины
-/*#include <mcp2515.h>
-#include <SPI.h>*/
-//Для PID регулятора
-#include <GyverPID.h>
-//Для работы с памятью
-#include <EEPROM.h>
+
+#include "controll/FanController.h"
+#include "controll/TempServoController.h"
+#include "controll/AirRecirculationButtonController.h"
+#include "controll/AirConditioningButtonController.h"
+#include "OBD2.h"
+#include "TemperatureSensor.h"
+#include "TempAssist.h"
+
+FanController fanController(0, 100);
+TempServoController tempServoController();
+AirRecirculationButtonController airRecirculationButtonController();
+AirConditioningButtonController airConditioningButtonController();
+TemperatureSensor temperatureSensor();
 
 /*
   Command List:
@@ -69,20 +70,7 @@
   }
 */
 
-#define VERSION 2.15 //old 2.14
-//Выводы, к которому подключён:
-#define TRANSISTOR_BUS 3 //TRANSISTOR
-#define ONE_WIRE_BUS 4 //DS18B20 - датчик температуры
-#define RELAY_AIR_RECIRCULATION_BUS 6 // Реле рециркуляции воздуха
-#define RELAY_AIR_CONDITIONING_BUS 7 // Реле кондиционера
-#define RELAY_SERVO_SIGNAL_BUS 8 //RELAY
-#define SERVO_BUS 9 //SERVO_MOTOR
-#define BUTTON_AIR_RECIRCULATION_BUS 10 // Кнопка рециркуляции
-#define BUTTON_AIR_CONDITIONING_BUS 11 // Кнопка кондиционера
-//Аналоговые
-#define HEATER_TEMP_BUS A0 // A0 = Температура в печке
-
-#define TEMPERATURE_PRECISION 12 // точность измерений (9 ... 12)
+#define VERSION "2022.07.10" // Date format yyyy.mm.dd
 
 //Физические ограничения серво-мотора
 #define SERVO_ROTATE_MIN 0
@@ -95,19 +83,6 @@
 */
 byte mode = 0;
 boolean initEnd = false; //Чтобы не дерггать сервомотор в начале
-
-OneWire oneWire(ONE_WIRE_BUS); //Говорим к какому пину подключены датчики температуры
-DallasTemperature sensor(&oneWire);
-DeviceAddress addressTempInHeater = {0x28, 0xBC, 0x67, 0x94, 0x97, 0x02, 0x03, 0xEA};
-DeviceAddress addressTempInCar = {0x28, 0xAA, 0x19, 0xC8, 0x52, 0x14, 0x01, 0x9A};
-
-ServoSmooth servoHot; //контроль заслонки тепло-хoлод
-GyverPID servoHotPID(14, 0.82, 0); //15.2 0.82 0
-GyverPID fanSpeedPID(15.2, 0.82, 0);
-
-float tempNowHeater = 0.0; // текущее значение температуры в печке
-float tempNowCar = 0.0; // текущее значение температуры в машине
-float tempNowOutCar = 0.0; // текущее значение температуры на улице
 
 int speedFan = 0; // скорость вентилятора
 
@@ -135,6 +110,9 @@ struct {
 
   byte servoTickCount = 5;
   byte fanSpeedType = 1;
+
+  boolean manualFanSpeed = false; // work in auto mode
+  boolean manualServoHot = false; // work in auto mode
 } setting;
 
 void updatePID(){
@@ -303,6 +281,6 @@ void getStatus(){
 }
 
 void getVersion(){
-  Serial.print("VERSION: ");
+  Serial.print("VERSION=");
   Serial.println(VERSION);
 }
