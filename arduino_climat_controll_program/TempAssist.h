@@ -1,6 +1,6 @@
 #include <GyverPID.h>
 
-#include "TemperatureSensor.h"
+#include "sensor/TemperatureSensor.h"
 #include "Setting.h"
 
 class TempAssist {

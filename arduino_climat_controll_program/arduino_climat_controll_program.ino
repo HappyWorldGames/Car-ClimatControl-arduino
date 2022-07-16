@@ -4,7 +4,7 @@
 #include "controll/AirRecirculationButtonController.h"
 #include "controll/AirConditioningButtonController.h"
 #include "OBD2.h"
-#include "TemperatureSensor.h"
+#include "sensor/TemperatureSensor.h"
 #include "TempAssist.h"
 
 FanController fanController(0, 100);
