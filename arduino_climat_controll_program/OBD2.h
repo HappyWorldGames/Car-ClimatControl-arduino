@@ -27,11 +27,11 @@ class OBD2 {
     }
 
     void onData(String data) {
-      if(startText(data, ""){
-        if(tempListener != null) {
-          temp = TODO();
+      if(startText(data, "")){
+        //if(tempListener != NULL) {
+          int temp = TODO();
           tempListener(temp);
-        }
+        //}
       }
     }
 
