@@ -6,7 +6,7 @@
 
 class Setting {
   private:
-    
+	
   public:
     struct {
       #define TRANSISTOR_PIN 3                        // TRANSISTOR
@@ -36,43 +36,37 @@ class Setting {
       int maxRotateServoHot = 180;
       float deadRotateServoHot = 1; // разница температуры от заданной при которой не будет работать заслонка тепло-холод
       
-      //int maxRotateServoAirWay = 180; // пока не актуально, для заслонки направления воздуха
-      
-      float servoHotPID[3] = { 14, 0.82, 0 };
-      
-      byte servoTickCount = 5;
-      
       boolean manualFanSpeed = false;
       boolean manualServoHot = false;
     } data;
   
-    Setting() {
-      
-    }
+    Setting() {}
 
-void print(Base const& b) { boost::fusion::for_each<Base>(b, Print()); }
     void printSetting() {
-      
+		Serial.println("AUTO_MODE_UPDATE_TIME=" + data.AUTO_MODE_UPDATE_TIME);
+		
+		Serial.println("tempMinStartWork=" + data.tempMinStartWork);
+		Serial.println("tempMaxStartWork=" + data.tempMaxStartWork);
     }
 
-    void saveTempServoPos() {
-      TODO()
+    void saveTempServoPos(int pos) {
+      EEPROM.update(1, (byte)pos);
+	  Serial.println("Saved Servo Pos");
       // Зарезервированна ячейка 1 EEPROM, буду сохранять от 0 до 100
     }
     int loadTempServoPos() {
-      TODO()
+      return (int)EEPROM[1];
+	  Serial.println("Loaded Servo Pos");
     }
     
     void save() {
       EEPROM.update(0, 0); // Записываем в первую ячейку 0, потому что по умолчанию там 255 (Даем знать что есть сохранения)
-      EEPROM.put(2, setting); // Записываем настройки
+      EEPROM.put(2, data); // Записываем настройки
       Serial.println("Saved");
     }
     void load() {
       if(EEPROM[0] == 255) return; // Проверяем первую ячейку памяти, если она равна 255, то нечего не делаем
-      EEPROM.get(2, setting); // Если не равна 255, то читаем настройки
-      
-      updatePID();
+      EEPROM.get(2, data); // Если не равна 255, то читаем настройки
       
       Serial.println("Loaded");
     }
@@ -80,4 +74,4 @@ void print(Base const& b) { boost::fusion::for_each<Base>(b, Print()); }
       EEPROM.update(0, 255); // Записываем в первую ячейку 255, обнуляя ячейку
       Serial.println("Save reset");
     }
-}
+};

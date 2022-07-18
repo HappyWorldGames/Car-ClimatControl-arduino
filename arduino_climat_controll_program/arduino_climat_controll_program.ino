@@ -1,17 +1,20 @@
-
+/*
 #include "controll/FanController.h"
 #include "controll/TempServoController.h"
 #include "controll/AirRecirculationButtonController.h"
 #include "controll/AirConditioningButtonController.h"
 #include "OBD2.h"
 #include "sensor/TemperatureSensor.h"
-#include "TempAssist.h"
 
 FanController fanController(0, 100);
 TempServoController tempServoController();
 AirRecirculationButtonController airRecirculationButtonController();
 AirConditioningButtonController airConditioningButtonController();
 TemperatureSensor temperatureSensor();
+*/
+#include "TempAssist.h"
+
+TempAssist tempAssist();
 
 /*
   Command List:
@@ -72,10 +75,6 @@ TemperatureSensor temperatureSensor();
 
 #define VERSION "2022.07.10" // Date format yyyy.mm.dd
 
-//Физические ограничения серво-мотора
-#define SERVO_ROTATE_MIN 0
-#define SERVO_ROTATE_MAX 180
-
 /*
   0 = автоматический режим
   1 = ручной режим
@@ -84,52 +83,10 @@ TemperatureSensor temperatureSensor();
 byte mode = 0;
 boolean initEnd = false; //Чтобы не дерггать сервомотор в начале
 
-int speedFan = 0; // скорость вентилятора
-
-int rotateServoHot = -1; // положение заслонки тепло-холод
-
-struct {
-  int AUTO_MODE_UPDATE_TIME = 2000; // время обновления авто-режима
-  
-  int tempMinStartWork = 40; // минимальная температура при которой начнётся нагрев салона
-  int tempMaxStartWork = 20; // tempMinStartWork + tempMaxStartWork = когда вентелятор будет дуть на полную
-  int diffSpeedFan = 6; // от 0 до diffSpeedFan, интерпритируются от minSpeedFan до 255, разница скорости вентилятора от заданной температуры
-
-  float tempSet = 22.0; // установление значения желаемой температуры
-
-  boolean alwaysOnFan = true;
-  int minSpeedFan = 120;
-
-  int maxRotateServoHot = 180;
-  float deadRotateServoHot = 1; // разница температуры от заданной при которой не будет работать заслонка тепло-холод
-
-  //int maxRotateServoAirWay = 180; // пока не актуально, для заслонки направления воздуха
-
-  float servoHotPID[3] = { 14, 0.82, 0 };
-  float fanSpeedPID[3] = { 15.2, 0.82, 0 };
-
-  byte servoTickCount = 5;
-  byte fanSpeedType = 1;
-
-  boolean manualFanSpeed = false; // work in auto mode
-  boolean manualServoHot = false; // work in auto mode
-} setting;
-
-void updatePID(){
-  //servoHotPID loading
-  servoHotPID.Kp = setting.servoHotPID[0];
-  servoHotPID.Ki = setting.servoHotPID[1];
-  servoHotPID.Kd = setting.servoHotPID[2];
-  //fanSpeedPID loading
-  fanSpeedPID.Kp = setting.fanSpeedPID[0];
-  fanSpeedPID.Ki = setting.fanSpeedPID[1];
-  fanSpeedPID.Kd = setting.fanSpeedPID[2];
-}
-
 void setup() {
   TCCR2B = 0b00000001; // x1
   TCCR2A = 0b00000011; // fast pwm
-
+/*
   pinMode(RELAY_SERVO_SIGNAL_BUS, OUTPUT);
   digitalWrite(RELAY_SERVO_SIGNAL_BUS, LOW);
 
@@ -147,10 +104,11 @@ void setup() {
   fanSpeedPID.setDt(setting.AUTO_MODE_UPDATE_TIME);
   fanSpeedPID.setpoint = setting.tempSet;
   fanSpeedPID.setLimits(setting.minSpeedFan, 255);
-  fanSpeedPID.setDirection(NORMAL);
+  fanSpeedPID.setDirection(NORMAL);*/
 }
 
 void loop() {
+  /*
   if (Serial.available()) {
     int command = Serial.parseInt();
     switch (command) {
@@ -213,9 +171,9 @@ void loop() {
     rotateServoHot = -1;
     
     initEnd = true;
-  }
+  }*/
 }
-
+/*
 void getStatus(){
   Serial.print("mode ");
   Serial.println(mode);
@@ -248,7 +206,7 @@ void getStatus(){
   Serial.println(setting.deadRotateServoHot);
 /*
   Serial.print("maxRotateServoAirWay ");
-  Serial.println(setting.maxRotateServoAirWay);*/
+  Serial.println(setting.maxRotateServoAirWay);*//*
 
   showServoHotPID();
   showFanSpeedPID();
@@ -284,3 +242,4 @@ void getVersion(){
   Serial.print("VERSION=");
   Serial.println(VERSION);
 }
+*/
