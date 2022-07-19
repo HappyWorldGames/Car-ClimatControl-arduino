@@ -22,6 +22,10 @@ class FanController {
       analogWrite(mTransistorPin, fanSpeed); //max 255
     }
 
+	int getFanSpeed() {
+		return fanSpeed;
+	}
+
     void printFanSpeed() {
       int fanSpeedValue = map(fanSpeed, mMinFanSpeed, 255, 0, 100);
       

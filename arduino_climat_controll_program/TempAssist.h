@@ -9,28 +9,18 @@
 
 class TempAssist {
   private:
-    GyverPID *servoHotPID = NULL;
+	Setting setting = Setting();
+    
+	//GyverPID servoHotPID(14f, 0.82f, 0.0f, setting.data.AUTO_MODE_UPDATE_TIME); //15.2 0.82 0
 	
-    Setting *setting = NULL;
-	
-    TemperatureSensor *tempSensor = NULL;
-	FanController *fanController = NULL;
+	TemperatureSensor tempSensor = TemperatureSensor(setting.pin.ONE_WIRE_PIN);
+	FanController fanController = FanController(setting.pin.TRANSISTOR_PIN, setting.data.minSpeedFan);
 	
   public:
-    TempAssist() {
-      // init TempAssist
-	  setting = new Setting();
-	  setting->load();
-	  
-	  servoHotPID = new GyverPID(14f, 0.82, 0, setting.data.AUTO_MODE_UPDATE_TIME); //15.2 0.82 0
-	  
-	  tempSensor = new TemperatureSensor(setting.pin.ONE_WIRE_PIN);
-	  fanController = new FanController(setting.pin.TRANSISTOR_PIN, setting.data.minSpeedFan);
-	  
-    }
+    TempAssist() {}
 
     void setWantTempInCar(int temp) {
-      setting.wantTempInCar = temp;
+      setting.data.wantTempInCar = temp;
     }
 
     void loop() {
@@ -41,7 +31,7 @@ class TempAssist {
       // Проверка ручного режима вентилятора
       if(!setting.data.manualFanSpeed) {
         if (setting.data.wantTempInCar > tempInCar && tempInHeater < setting.data.tempMinStartWork){
-          if(speedFan > 0) setSpeedFan(-1);
+          if(fanController.getFanSpeed() > 0) fanController.setFanSpeed(-1);
           return;
         }
         //Максимальные обороты вентилятора
@@ -54,7 +44,7 @@ class TempAssist {
         //Вентилятор
         int localSpeedFan = map(diffTemp, 0, setting.data.diffSpeedFan, 0, maxSpeedFan);
         localSpeedFan = constrain(localSpeedFan, 0, maxSpeedFan);
-        fanController.setSpeedFan(localSpeedFan);
+        fanController.setFanSpeed(localSpeedFan);
       }
     }
-}
+};

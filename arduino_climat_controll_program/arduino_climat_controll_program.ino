@@ -14,8 +14,6 @@ TemperatureSensor temperatureSensor();
 */
 #include "TempAssist.h"
 
-TempAssist tempAssist();
-
 /*
   Command List:
   403 = запрос версии прошивки
@@ -82,6 +80,8 @@ TempAssist tempAssist();
 */
 byte mode = 0;
 boolean initEnd = false; //Чтобы не дерггать сервомотор в начале
+
+TempAssist tempAssist = TempAssist();
 
 void setup() {
   TCCR2B = 0b00000001; // x1

@@ -49,4 +49,4 @@ class ServiceAssist {
 					break;
 			}
 		}
-}
+};

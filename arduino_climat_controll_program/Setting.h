@@ -9,16 +9,16 @@ class Setting {
 	
   public:
     struct {
-      #define TRANSISTOR_PIN 3                        // TRANSISTOR
-      #define ONE_WIRE_PIN 4                          // DS18B20 - датчики температуры
-      #define RELAY_AIR_RECIRCULATION_PIN 6           // Реле рециркуляции воздуха
-      #define RELAY_AIR_CONDITIONING_PIN 7            // Реле кондиционера
-      #define RELAY_SERVO_SIGNAL_PIN 8                // Реле
-      #define SERVO_PIN 9                             // Серво-Мотор
-      #define BUTTON_AIR_RECIRCULATION_PIN 10         // Кнопка рециркуляции
-      #define BUTTON_AIR_CONDITIONING_PIN 11          // Кнопка кондиционера
-                                      //Аналоговые
-      #define HEATER_TEMP_PIN A0                      // A0 = Температура в печке
+      const int TRANSISTOR_PIN = 3;                        // TRANSISTOR
+      const int ONE_WIRE_PIN = 4;                          // DS18B20 - датчики температуры
+      const int RELAY_AIR_RECIRCULATION_PIN = 6;           // Реле рециркуляции воздуха
+      const int RELAY_AIR_CONDITIONING_PIN = 7;            // Реле кондиционера
+      const int RELAY_SERVO_SIGNAL_PIN = 8;                // Реле
+      const int SERVO_PIN = 9;                             // Серво-Мотор
+      const int BUTTON_AIR_RECIRCULATION_PIN = 10;         // Кнопка рециркуляции
+      const int BUTTON_AIR_CONDITIONING_PIN = 11;          // Кнопка кондиционера
+										//Аналоговые
+      const int HEATER_TEMP_PIN = A0;                      // A0 = Температура в печке
     } pin;
     
     struct {
@@ -40,7 +40,9 @@ class Setting {
       boolean manualServoHot = false;
     } data;
   
-    Setting() {}
+    Setting() {
+		load();
+	}
 
     void printSetting() {
 		Serial.println("AUTO_MODE_UPDATE_TIME=" + data.AUTO_MODE_UPDATE_TIME);
