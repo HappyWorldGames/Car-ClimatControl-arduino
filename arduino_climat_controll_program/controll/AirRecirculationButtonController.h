@@ -1,3 +1,5 @@
+#pragma once
+
 class AirRecirculationButtonController {
   private:
     boolean isAirRecirculationEnabled = true;

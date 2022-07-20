@@ -1,3 +1,5 @@
+#pragma once
+
 class AirConditioningButtonController {
   private:
     boolean isAirConditioningEnabled = true;

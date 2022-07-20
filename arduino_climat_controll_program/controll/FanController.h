@@ -1,3 +1,5 @@
+#pragma once
+
 class FanController {
   private:
     int mTransistorPin = -1; // ПИН транзистора

@@ -1,16 +1,10 @@
 /*
-#include "controll/FanController.h"
-#include "controll/TempServoController.h"
 #include "controll/AirRecirculationButtonController.h"
 #include "controll/AirConditioningButtonController.h"
 #include "OBD2.h"
-#include "sensor/TemperatureSensor.h"
 
-FanController fanController(0, 100);
-TempServoController tempServoController();
 AirRecirculationButtonController airRecirculationButtonController();
 AirConditioningButtonController airConditioningButtonController();
-TemperatureSensor temperatureSensor();
 */
 #include "TempAssist.h"
 
@@ -95,16 +89,7 @@ void setup() {
   initControllButton();
   initSensorTemperature();
   initControllServo();
-
-  servoHotPID.setDt(setting.AUTO_MODE_UPDATE_TIME * setting.servoTickCount);
-  servoHotPID.setpoint = setting.tempSet;
-  servoHotPID.setLimits(SERVO_ROTATE_MIN, SERVO_ROTATE_MAX);
-  servoHotPID.setDirection(REVERSE);
-
-  fanSpeedPID.setDt(setting.AUTO_MODE_UPDATE_TIME);
-  fanSpeedPID.setpoint = setting.tempSet;
-  fanSpeedPID.setLimits(setting.minSpeedFan, 255);
-  fanSpeedPID.setDirection(NORMAL);*/
+*/
 }
 
 void loop() {

@@ -1,3 +1,5 @@
+#pragma once
+
 class TempListener {
   public:
     virtual void onTempListener(int temp);

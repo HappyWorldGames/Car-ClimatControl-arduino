@@ -22,7 +22,12 @@ class TempAssist {
 		TempServoController tempServoController = TempServoController(setting.pin.TEMP_SERVO_PIN, setting);
 	
 	public:
-		TempAssist() {}
+		TempAssist() {
+			servoTempPID.setDt(setting.data.AUTO_MODE_UPDATE_TIME * setting.data.servoTickCount);
+			servoTempPID.setpoint = setting.data.wantTempInCar;
+			servoTempPID.setLimits(0, setting.data.maxRotateServoTemp);
+			servoTempPID.setDirection(REVERSE);
+		}
 		
 		void setWantTempInCar(int temp) {
 			setting.data.wantTempInCar = temp;
