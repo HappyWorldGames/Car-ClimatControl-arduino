@@ -36,9 +36,9 @@ class Setting {
 			
 			int maxRotateServoTemp = 180;
 			float deadRotateServoTemp = 1; 					// разница температуры от заданной при которой не будет работать заслонка тепло-холод
-			float servoHotPID[3] = { 14, 0.82, 0 };
+			float servoHotPID[3] = { 14, 0.82, 0 };			// old value (15.2, 0,.82 0)
 			byte servoTickCount = 5;
-		  
+			
 			boolean manualFanSpeed = false;
 			boolean manualServoTemp = false;
 		} data;
@@ -52,6 +52,20 @@ class Setting {
 			
 			Serial.println("tempMinStartWork=" + data.tempMinStartWork);
 			Serial.println("tempMaxStartWork=" + data.tempMaxStartWork);
+			Serial.println("diffSpeedFan=" + data.diffSpeedFan);
+			
+			Serial.println("wantTempInCar=" + String(data.wantTempInCar, 2));
+			
+			Serial.println("alwaysOnFan=" + data.alwaysOnFan);
+			Serial.println("minSpeedFan=" + data.minSpeedFan);
+			
+			Serial.println("maxRotateServoTemp=" + data.maxRotateServoTemp);
+			Serial.println("deadRotateServoTemp=" + String(data.deadRotateServoTemp, 2));
+			Serial.println("servoHotPID=" + String(data.servoHotPID[0], 2) + ' ' + String(data.servoHotPID[1], 2) + ' ' + String(data.servoHotPID[2], 2));
+			Serial.println("servoTickCount=" + data.servoTickCount);
+			
+			Serial.println("manualFanSpeed=" + data.manualFanSpeed);
+			Serial.println("manualServoTemp=" + data.manualServoTemp);
 		}
 		
 		void saveTempServoPos(int pos) {

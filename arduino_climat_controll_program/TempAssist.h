@@ -14,7 +14,7 @@ class TempAssist {
 	private:
 		Setting setting = Setting();
 		
-		GyverPID servoTempPID = GyverPID(14, 0.82, 0); //15.2 0.82 0
+		GyverPID servoTempPID = GyverPID(setting.data.servoHotPID[0], setting.data.servoHotPID[1], setting.data.servoHotPID[2]);
 		
 		TemperatureSensor tempSensor = TemperatureSensor(setting.pin.ONE_WIRE_PIN);
 		
@@ -99,4 +99,54 @@ class TempAssist {
 			}else airConditioning(false);*/
 		  
 		}
+		
+		// Пока тут лежит
+		void setManualFanSpeed(boolean manual){
+			if(setting.data.manualFanSpeed == manual) return;
+			setting.data.manualFanSpeed = manual;
+			Serial.print("manualFanSpeed=");
+			Serial.println(setting.data.manualFanSpeed);
+		}
+		void setManualServoHot(boolean manual){
+			if(setting.data.manualServoTemp == manual) return;
+			setting.data.manualServoTemp = manual;
+			Serial.print("manualServoTemp=");
+			Serial.println(setting.data.manualServoTemp);
+		}
+		
+		//Прием команд в режиме auto
+		/*void serialAutoMode(int command) {
+		  switch (command) {
+			case 01:
+			  setTemp(Serial.parseFloat());
+			  break;
+			case 11:
+			  setManualFanSpeed(true);
+			  setSpeedFan(Serial.parseInt());
+			  break;
+			case 12:
+			  switch (Serial.parseInt()) {
+				case 0:
+				  setting.alwaysOnFan = false;
+				  break;
+				case 1:
+				  setting.alwaysOnFan = true;
+				  break;
+			  }
+			  setSpeedFan(speedFan, false, true);
+			  Serial.print("AlwaysOnFan ");
+			  Serial.println(setting.alwaysOnFan);
+			  break;
+			case 13:
+			  setManualFanSpeed(false);
+			  break;
+			case 22:
+			  setManualServoHot(true);
+			  setRotateServoHot(map(Serial.parseInt(), 0, 100, 0, setting.maxRotateServoHot));
+			  break;
+			case 23:
+			  setManualServoHot(false);
+			  break;
+		  }
+		}*/
 };
