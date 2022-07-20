@@ -10,24 +10,26 @@ class FanController {
       mMinFanSpeed = minFanSpeed;
     }
     
-    void setFanSpeed(int speed) {
-	  if(speed != -1) {
-		speed = constrain(speed, 0, 100);
-		speed = map(speed, 0, 100, mMinFanSpeed, 255);
-      }else speed = 0;
-      fanSpeed = speed;
-      
-      printFanSpeed();
-      
-      analogWrite(mTransistorPin, fanSpeed); //max 255
+    void setFanSpeed(int speed, bool isServiceMode = false) {
+		if (!isServiceMode) {
+			if(speed != -1) {
+				speed = constrain(speed, 0, 100);
+				speed = map(speed, 0, 100, mMinFanSpeed, 255);
+			}else speed = 0;
+		}
+		fanSpeed = speed;
+		
+		printFanSpeed();
+		
+		analogWrite(mTransistorPin, fanSpeed); //max 255
     }
 
 	int getFanSpeed() {
 		return fanSpeed;
 	}
 
-    void printFanSpeed() {
-      int fanSpeedValue = map(fanSpeed, mMinFanSpeed, 255, 0, 100);
+    void printFanSpeed(bool isServiceMode = false) {
+      int fanSpeedValue = !isServiceMode ? map(fanSpeed, mMinFanSpeed, 255, 0, 100) : fanSpeed;
       
       Serial.print("fan_speed=");
       Serial.println(fanSpeedValue);
