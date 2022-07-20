@@ -1,3 +1,15 @@
+// Other
+
+
+// My
+#include "Setting.h"
+#include "Bind.h"
+
+#include "sensor/TemperatureSensor.h"
+
+#include "controll/FanController.h"
+#include "controll/TempServoController.h"
+
 /*
 #include "controll/AirRecirculationButtonController.h"
 #include "controll/AirConditioningButtonController.h"
@@ -65,17 +77,18 @@ AirConditioningButtonController airConditioningButtonController();
   }
 */
 
-#define VERSION "2022.07.10" // Date format yyyy.mm.dd
+#define VERSION "2022.07.20" // Date format yyyy.mm.dd
 
-/*
-  0 = автоматический режим
-  1 = ручной режим
-  2 = сервисный режим
-*/
-byte mode = 0;
-boolean initEnd = false; //Чтобы не дерггать сервомотор в начале
+boolean initEnd = false; 					//Чтобы не дерггать сервомотор в начале
 
-TempAssist tempAssist = TempAssist();
+Setting setting = Setting();
+
+TemperatureSensor tempSensor = TemperatureSensor(setting.pin.ONE_WIRE_PIN);
+		
+FanController fanController = FanController(setting.pin.TRANSISTOR_PIN, setting.data.minSpeedFan);
+TempServoController tempServoController = TempServoController(setting.pin.TEMP_SERVO_PIN, setting);
+
+TempAssist tempAssist = TempAssist(setting, tempSensor, fanController, tempServoController);
 
 void setup() {
   TCCR2B = 0b00000001; // x1
@@ -85,7 +98,6 @@ void setup() {
   digitalWrite(RELAY_SERVO_SIGNAL_BUS, LOW);
 
   Serial.begin(9600);
-  load();
   initControllButton();
   initSensorTemperature();
   initControllServo();
@@ -158,73 +170,28 @@ void loop() {
     initEnd = true;
   }*/
 }
-/*
+
 void getStatus(){
-  Serial.print("mode ");
-  Serial.println(mode);
-  
-  Serial.print("AUTO_MODE_UPDATE_TIME ");
-  Serial.println(setting.AUTO_MODE_UPDATE_TIME);
-
-  Serial.print("tempMinStartWork ");
-  Serial.println(setting.tempMinStartWork);
-
-  Serial.print("tempMaxStartWork ");
-  Serial.println(setting.tempMaxStartWork);
-
-  Serial.print("diffSpeedFan ");
-  Serial.println(setting.diffSpeedFan);
-  
-  Serial.print("Temp_Set: ");
-  Serial.println(setting.tempSet);
-
-  Serial.print("AlwaysOnFan ");
-  Serial.println(setting.alwaysOnFan);
-
-  Serial.print("minSpeedFan ");
-  Serial.println(setting.minSpeedFan);
-
-  Serial.print("maxRotateServoHot ");
-  Serial.println(setting.maxRotateServoHot);
-
-  Serial.print("deadRotateServoHot ");
-  Serial.println(setting.deadRotateServoHot);
-/*
-  Serial.print("maxRotateServoAirWay ");
-  Serial.println(setting.maxRotateServoAirWay);*//*
-
-  showServoHotPID();
-  showFanSpeedPID();
-
-  Serial.print("servoTickCount ");
-  Serial.println(setting.servoTickCount);
-
-  Serial.print("fanSpeedType ");
-  Serial.println(setting.fanSpeedType);
-
-  getStatusControllFan();
-  getStatusControllServo();
-  getTemp();
-  getVersion();
-
-  switch(mode){
-    case 0:
-      getStatusModeAuto();
-      break;
-    case 1:
-      getStatusModeManual();
-      break;
-    case 2:
-      getStatusModeService();
-      break;
-  }
-
-  getStatusControllFan();
-  getStatusControllButton();
+	printVersion();
+	
+	setting.printSetting();
+	/*
+	getStatusControllFan();
+	getStatusControllServo();
+	getTemp();
+	getStatusControllButton();
+	
+	switch(mode){
+		case 1:
+			printStatusModeAuto();
+			break;
+		case 0:
+			getStatusModeService();
+			break;
+	}*/
 }
 
-void getVersion(){
-  Serial.print("VERSION=");
-  Serial.println(VERSION);
+void printVersion(){
+	Serial.print("VERSION=");
+	Serial.println(VERSION);
 }
-*/

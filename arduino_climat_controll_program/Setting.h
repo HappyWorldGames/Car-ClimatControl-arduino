@@ -23,6 +23,8 @@ class Setting {
 		} pin;
 		
 		struct {
+			byte mode = 0;									// Режим работы (0 - серсисный, 1 - нормальный)
+			
 			int AUTO_MODE_UPDATE_TIME = 2000; 				// время обновления авто-режима
 			
 			int tempMinStartWork = 40; 						// минимальная температура при которой начнётся нагрев салона
@@ -48,6 +50,8 @@ class Setting {
 		}
 		
 		void printSetting() {
+			Serial.println("mode=" + data.mode);
+			
 			Serial.println("AUTO_MODE_UPDATE_TIME=" + data.AUTO_MODE_UPDATE_TIME);
 			
 			Serial.println("tempMinStartWork=" + data.tempMinStartWork);

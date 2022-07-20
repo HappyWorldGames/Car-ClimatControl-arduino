@@ -18,9 +18,9 @@ class TempServoController {
 			
 			tempServo.setSpeed(50);   // ограничить скорость
 			tempServo.setAccel(0.3);    // установить ускорение (разгон и торможение)
-			setServoPos(servoPos);
-			tempServo.attach(tempServoPin); //привязываем привод к порту
-			setServoPos(servoPos);
+			
+			tempServo.attach(tempServoPin, servoPos); //привязываем привод к порту
+			tempServo.smoothStart();
 		}
 		
 		void setServoPos(int position, bool isServiceMode = false) {

@@ -4,11 +4,7 @@
 #include <GyverPID.h>
 
 // My
-#include "sensor/TemperatureSensor.h"
-#include "Setting.h"
 
-#include "controll/FanController.h"
-#include "controll/TempServoController.h"
 
 class TempAssist {
 	private:
@@ -20,9 +16,9 @@ class TempAssist {
 		
 		FanController fanController = FanController(setting.pin.TRANSISTOR_PIN, setting.data.minSpeedFan);
 		TempServoController tempServoController = TempServoController(setting.pin.TEMP_SERVO_PIN, setting);
-	
+		
 	public:
-		TempAssist() {
+		TempAssist(Setting setting, TemperatureSensor tempSensor, FanController fanController, TempServoController tempServoController) {
 			servoTempPID.setDt(setting.data.AUTO_MODE_UPDATE_TIME * setting.data.servoTickCount);
 			servoTempPID.setpoint = setting.data.wantTempInCar;
 			servoTempPID.setLimits(0, setting.data.maxRotateServoTemp);
