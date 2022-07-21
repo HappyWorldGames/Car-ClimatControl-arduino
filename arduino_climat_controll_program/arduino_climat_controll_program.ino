@@ -152,22 +152,3 @@ void loop() {
     initEnd = true;
   }*/
 }
-
-void getStatus(){
-	setting.printVersion();
-	setting.printSetting();
-	/*
-	getStatusControllFan();
-	getStatusControllServo();
-	getTemp();
-	getStatusControllButton();
-	
-	switch(mode){
-		case 1:
-			printStatusModeAuto();
-			break;
-		case 0:
-			getStatusModeService();
-			break;
-	}*/
-}
