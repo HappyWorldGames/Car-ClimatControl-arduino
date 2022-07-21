@@ -3,6 +3,12 @@
 // Other
 #include <GyverPID.h>
 
+// My
+#include "sensor/TemperatureSensor.h"
+
+#include "controll/FanController.h"
+#include "controll/TempServoController.h"
+
 class TempAssist {
 	private:
 		Setting* setting = NULL;
@@ -99,20 +105,6 @@ class TempAssist {
 				airRecirculation(true);
 			}else airConditioning(false);*/
 		  
-		}
-		
-		// Пока тут лежит
-		void setManualFanSpeed(boolean manual){
-			if(setting->data.manualFanSpeed == manual) return;
-			setting->data.manualFanSpeed = manual;
-			Serial.print("manualFanSpeed=");
-			Serial.println(setting->data.manualFanSpeed);
-		}
-		void setManualServoHot(boolean manual){
-			if(setting->data.manualServoTemp == manual) return;
-			setting->data.manualServoTemp = manual;
-			Serial.print("manualServoTemp=");
-			Serial.println(setting->data.manualServoTemp);
 		}
 		
 };

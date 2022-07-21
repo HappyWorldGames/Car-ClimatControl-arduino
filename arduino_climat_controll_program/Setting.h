@@ -34,8 +34,8 @@ class Setting {
 			
 			float wantTempInCar = 22.0; 					// установление значения желаемой температуры
 			
-			boolean alwaysOnFan = true;
-			int minSpeedFan = 120;
+			boolean alwaysOnFan = true;						// сейчас не используется
+			int minSpeedFan = 120;							// Минимальные значение шим при котором работает вентилятор
 			
 			int maxRotateServoTemp = 180;
 			float deadRotateServoTemp = 1; 					// разница температуры от заданной при которой не будет работать заслонка тепло-холод
@@ -50,8 +50,13 @@ class Setting {
 			load();
 		}
 		
+		/*
+		*	Start Print functions
+		*/
 		void printSetting() {
-			Serial.println("mode=" + data.mode);
+			printVersion();
+			
+			printMode();
 			
 			Serial.println("AUTO_MODE_UPDATE_TIME=" + data.AUTO_MODE_UPDATE_TIME);
 			
@@ -59,7 +64,7 @@ class Setting {
 			Serial.println("tempMaxStartWork=" + data.tempMaxStartWork);
 			Serial.println("diffSpeedFan=" + data.diffSpeedFan);
 			
-			Serial.println("wantTempInCar=" + String(data.wantTempInCar, 2));
+			printWantTempInCar();
 			
 			Serial.println("alwaysOnFan=" + data.alwaysOnFan);
 			Serial.println("minSpeedFan=" + data.minSpeedFan);
@@ -69,15 +74,62 @@ class Setting {
 			Serial.println("servoHotPID=" + String(data.servoHotPID[0], 2) + ' ' + String(data.servoHotPID[1], 2) + ' ' + String(data.servoHotPID[2], 2));
 			Serial.println("servoTickCount=" + data.servoTickCount);
 			
-			Serial.println("manualFanSpeed=" + data.manualFanSpeed);
-			Serial.println("manualServoTemp=" + data.manualServoTemp);
+			printManualFanSpeed();
+			printManualServoTemp();
 		}
 		
-		void printVersion(){
+		void printVersion() {
 			Serial.print("VERSION=");
 			Serial.println(VERSION);
 		}
+		void printMode() {
+			Serial.println("mode=" + data.mode);
+		}
 		
+		void printWantTempInCar() {
+			Serial.println("wantTempInCar=" + String(data.wantTempInCar, 2));
+		}
+		
+		void printManualFanSpeed() {
+			Serial.println("manualFanSpeed=" + data.manualFanSpeed);
+		}
+		void printManualServoTemp() {
+			Serial.println("manualServoTemp=" + data.manualServoTemp);
+		}
+		/*
+		*	End Print Functions
+		*/
+		
+		/*
+		*	Start Set Functions
+		*/
+		void setMode(int mode) {
+			data.mode = mode;
+			printMode();
+		}
+		
+		void setWantTempInCar(int temp) {
+			data.wantTempInCar = temp;
+			printWantTempInCar();
+		}
+		
+		void setManualFanSpeed(boolean manual) {
+			if(data.manualFanSpeed == manual) return;
+			data.manualFanSpeed = manual;
+			printManualFanSpeed();
+		}
+		void setManualServoTemp(boolean manual) {
+			if(data.manualServoTemp == manual) return;
+			data.manualServoTemp = manual;
+			printManualServoTemp();
+		}
+		/*
+		*	End Set Functions
+		*/
+		
+		/*
+		*	Start Save, Load, Reset
+		*/
 		void saveTempServoPos(int pos) {
 			// Зарезервированна ячейка 1 EEPROM, буду сохранять от 0 до 100
 			EEPROM.update(1, (byte)pos);
@@ -103,5 +155,7 @@ class Setting {
 			EEPROM.update(0, 255); 						// Записываем в первую ячейку 255, обнуляя ячейку
 			Serial.println("Save reset");
 		}
-		
+		/*
+		*	End Save, Load, Reset
+		*/
 };
