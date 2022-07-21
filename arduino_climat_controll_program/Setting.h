@@ -108,7 +108,7 @@ class Setting {
 			printMode();
 		}
 		
-		void setWantTempInCar(int temp) {
+		void setWantTempInCar(float temp) {
 			data.wantTempInCar = temp;
 			printWantTempInCar();
 		}

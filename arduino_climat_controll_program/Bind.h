@@ -27,25 +27,25 @@ class Bind {
 		*		23 = выключить ручной режим для заслонки тепло-холод
 		*/
 		void onNormal(int cmd) {
-			/*switch (cmd) {
+			switch (cmd) {
 				case 01:
-					setTemp(Serial.parseFloat());
+					setting->setWantTempInCar(Serial.parseFloat());
 					break;
 				case 11:
-					setManualFanSpeed(true);
-					setSpeedFan(Serial.parseInt());
+					setting->setManualFanSpeed(true);
+					fanController->setFanSpeed(Serial.parseInt());
 					break;
 				case 13:
-					setManualFanSpeed(false);
+					setting->setManualFanSpeed(false);
 					break;
 				case 22:
-					setManualServoHot(true);
-					setRotateServoHot(Serial.parseInt());
+					setting->setManualServoTemp(true);
+					tempServoController->setServoPos(Serial.parseInt());
 					break;
 				case 23:
-					setManualServoHot(false);
+					setting->setManualServoTemp(false);
 					break;
-			}*/
+			}
 		}
 		
 		void onService(int cmd) {
