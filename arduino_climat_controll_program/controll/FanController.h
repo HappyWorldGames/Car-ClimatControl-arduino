@@ -26,7 +26,7 @@ class FanController {
 			}
 			fanSpeed = speed;
 			
-			printFanSpeed();
+			printFanSpeed(isServiceMode);
 			
 			analogWrite(mTransistorPin, fanSpeed); //max 255
 		}

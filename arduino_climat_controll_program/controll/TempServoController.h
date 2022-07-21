@@ -31,13 +31,13 @@ class TempServoController {
 			servoPos = position;
 			setting -> saveTempServoPos(servoPos);
 			
-			printServoPos();
+			printServoPos(isServiceMode);
 			
 			tempServo.setTargetDeg(servoPos);	// max 180
 		}
 		
-		void printServoPos() {
-			int servoPosValue = map(servoPos, 0, maxPosition, 0, 100);
+		void printServoPos(bool isServiceMode = false) {
+			int servoPosValue = !isServiceMode ? map(servoPos, 0, maxPosition, 0, 100) : servoPos;
 			
 			Serial.print("temp_servo_pos=");
 			Serial.println(servoPosValue);
