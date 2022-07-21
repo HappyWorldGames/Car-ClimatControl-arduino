@@ -2,22 +2,27 @@
 
 class FanController {
 	private:
-		int mTransistorPin = -1; // ПИН транзистора
-		int mMinFanSpeed = -1; // Минимальные обороты
-		int fanSpeed = -1; // скорость вентилятора
+		int mTransistorPin = -1; 			// ПИН транзистора
+		int mMinFanSpeed = -1; 				// Минимальные обороты
+		boolean mAlwaysOnFan = false;		// Крутиться при 0
+		
+		int fanSpeed = -1; 					// скорость вентилятора
 		
 	public:
-		FanController(int transistorPin, int minFanSpeed) {
+		FanController(int transistorPin, int minFanSpeed, boolean alwaysOnFan) {
 			mTransistorPin = transistorPin;
 			mMinFanSpeed = minFanSpeed;
+			mAlwaysOnFan = alwaysOnFan;
 		}
 		
 		void setFanSpeed(int speed, bool isServiceMode = false) {
 			if (!isServiceMode) {
-				if(speed != -1) {
+				if(!mAlwaysOnFan && speed == 0){
+					speed = 0;
+				} else {
 					speed = constrain(speed, 0, 100);
 					speed = map(speed, 0, 100, mMinFanSpeed, 255);
-				}else speed = 0;
+				}
 			}
 			fanSpeed = speed;
 			

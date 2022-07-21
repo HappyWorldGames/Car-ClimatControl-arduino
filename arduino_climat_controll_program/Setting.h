@@ -34,7 +34,7 @@ class Setting {
 			
 			float wantTempInCar = 22.0; 					// установление значения желаемой температуры
 			
-			boolean alwaysOnFan = true;						// сейчас не используется
+			boolean alwaysOnFan = true;						// Крутиться ли при 0
 			int minSpeedFan = 120;							// Минимальные значение шим при котором работает вентилятор
 			
 			int maxRotateServoTemp = 180;
