@@ -7,6 +7,7 @@
 
 class Setting {
 	private:
+		#define VERSION "2022.07.21" // Date format yyyy.mm.dd
 		
 	public:
 		struct {
@@ -70,6 +71,11 @@ class Setting {
 			
 			Serial.println("manualFanSpeed=" + data.manualFanSpeed);
 			Serial.println("manualServoTemp=" + data.manualServoTemp);
+		}
+		
+		void printVersion(){
+			Serial.print("VERSION=");
+			Serial.println(VERSION);
 		}
 		
 		void saveTempServoPos(int pos) {

@@ -22,23 +22,7 @@ AirConditioningButtonController airConditioningButtonController();
 
 /*
 	Command List:
-		403 = запрос версии прошивки
-		404 = сохранение
-	405 = сброс сохранений
-  908 = сигнализирует о подключение устройства(нужно сообщить все показатели)
-  909 = автоматический режим {
-    01 ** = устанавливает желаемую температуру
-    11 *** = установка скорости вентилятора(0-100)
-    12 *(0 или 1) = всегда включен вентилятор
-    13 = выключить ручной режим для вентилятора
-    22 *** = установка положения тепло-холод(0-100), где 50 середина
-    23 = выключить ручной режим для заслонки тепло-холод
-  }
-  910 = ручной режим {
-    11 *** = установка скорости вентилятора(0-100)
-    12 *(0 или 1) = всегда включен вентилятор
-    22 *** = установка положения тепло-холод(0-100), где 50 середина
-  }
+
   911 = сервисный режим {
     // 1** - связан с вентилятором
     11 ** = тест скорости вентилятора (абсолютный)
@@ -76,8 +60,6 @@ AirConditioningButtonController airConditioningButtonController();
     55 * = изменить fanSpeedType(max 255)(0 = PID, 1 = Linear)
   }
 */
-
-#define VERSION "2022.07.20" // Date format yyyy.mm.dd
 
 boolean initEnd = false; 					//Чтобы не дерггать сервомотор в начале
 
@@ -172,8 +154,7 @@ void loop() {
 }
 
 void getStatus(){
-	printVersion();
-	
+	setting.printVersion();
 	setting.printSetting();
 	/*
 	getStatusControllFan();
@@ -189,9 +170,4 @@ void getStatus(){
 			getStatusModeService();
 			break;
 	}*/
-}
-
-void printVersion(){
-	Serial.print("VERSION=");
-	Serial.println(VERSION);
 }
