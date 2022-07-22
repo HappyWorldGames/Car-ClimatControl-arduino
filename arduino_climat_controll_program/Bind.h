@@ -69,7 +69,7 @@ class Bind {
 		*		34 *** = установка максимального положения направление потока воздуха
 		*
 		*		// 4** - связан с датчиками температуры
-		*		41 = тест датчика температуры(запрос температуры)
+		*		41 * = тест датчика температуры(запрос температуры(Номер датчика))
 		*		42 ** = установить минимальную начальную температуру
 		*		43 ** = установить максимальную начальную температуру
 		*		44 ** = установить разницу скорости вентилятора от заданой температуры
@@ -79,10 +79,9 @@ class Bind {
 		*
 		*		// 5** - прочее
 		*		51 ** = время обновления авто режима
-		*		52 * * * * = изменнить PID (0 = servoHotPID; 1 = fanSpeedPID) значение P I D
-		*		53 * = показать PID (0 = servoHotPID; 1 = fanSpeedPID)
+		*		52 * * * = изменнить PID servoHotPID значение P I D
+		*		53 = показать настройки
 		*		54 * = изменить servoTickCount(max 255)
-		*		55 * = изменить fanSpeedType(max 255)(0 = PID, 1 = Linear)
 		*/
 		void onService(int cmd) {
 			switch (cmd) {
@@ -113,13 +112,12 @@ class Bind {
 					setting->data.maxRotateServoTemp = Serial.parseInt();
 					setting->printSetting();
 					break;
-				/*case 25:
-				  setting.deadRotateServoHot = Serial.parseFloat();
-				  Serial.print("deadRotateServoHot ");
-				  Serial.println(setting.deadRotateServoHot);
-				  break;
+				case 25:
+					setting->data.deadRotateServoTemp = Serial.parseFloat();
+					setting->printSetting();
+					break;
 				//направление потока воздуха
-				case 31:
+				/*case 31:
 				  setRotateServoAirWay(Serial.parseInt(), true);
 				  break;
 				case 32:
@@ -129,27 +127,24 @@ class Bind {
 				  servoHot.setTarget(Serial.parseInt());
 				  Serial.print("write_servo_micro ");
 				  Serial.println(servoHot.getTarget());
-				  break;
+				  break;*/
 				//Температура
 				case 41:
-				  getTemp();
-				  break;
+					tempSensor->printTemp(Serial.parseInt());
+					break;
 				case 42:
-				  setting.tempMinStartWork = Serial.parseInt();
-				  Serial.print("tempMinStartWork ");
-				  Serial.println(setting.tempMinStartWork);
-				  break;
+					setting->data.tempMinStartWork = Serial.parseInt();
+					setting->printSetting();
+					break;
 				case 43:
-				  setting.tempMaxStartWork = Serial.parseInt();
-				  Serial.print("tempMaxStartWork ");
-				  Serial.println(setting.tempMaxStartWork);
-				  break;
+					setting->data.tempMaxStartWork = Serial.parseInt();
+					setting->printSetting();
+					break;
 				case 44:
-				  setting.diffSpeedFan = Serial.parseInt();
-				  Serial.print("diffSpeedFan ");
-				  Serial.println(setting.diffSpeedFan);
-				  break;
-				case 45:
+					setting->data.diffSpeedFan = Serial.parseInt();
+					setting->printSetting();
+					break;
+				/*case 45:
 				  tempNowHeater = Serial.parseFloat();
 				  Serial.print("tempNowHeater ");
 				  Serial.println(tempNowHeater);
@@ -163,58 +158,31 @@ class Bind {
 				  tempNowOutCar = Serial.parseFloat();
 				  Serial.print("tempNowOutCar ");
 				  Serial.println(tempNowOutCar);
-				  break;
+				  break;*/
 				//Прочее
 				case 51:
-				  setting.AUTO_MODE_UPDATE_TIME = Serial.parseInt();
-				  servoHotPID.setDt(setting.AUTO_MODE_UPDATE_TIME * setting.servoTickCount);
-				  fanSpeedPID.setDt(setting.AUTO_MODE_UPDATE_TIME);
-				  Serial.print("AUTO_MODE_UPDATE_TIME ");
-				  Serial.println(setting.AUTO_MODE_UPDATE_TIME);
-				  break;
+					setting->data.AUTO_MODE_UPDATE_TIME = Serial.parseInt();
+					setting->printSetting();
+					break;
 				case 52:
-				  switch(Serial.parseInt()){
-					case 0:
-					  setting.servoHotPID[0] = Serial.parseFloat();
-					  setting.servoHotPID[1] = Serial.parseFloat();
-					  setting.servoHotPID[2] = Serial.parseFloat();
-					  showServoHotPID();
-					  break;
-					case 1:
-					  setting.fanSpeedPID[0] = Serial.parseFloat();
-					  setting.fanSpeedPID[1] = Serial.parseFloat();
-					  setting.fanSpeedPID[2] = Serial.parseFloat();
-					  showFanSpeedPID();
-					  break;
-				  }
-				  updatePID();
-				  break;
+					setting->data.servoHotPID[0] = Serial.parseFloat();
+					setting->data.servoHotPID[1] = Serial.parseFloat();
+					setting->data.servoHotPID[2] = Serial.parseFloat();
+					setting->printSetting();
+					break;
 				case 53:
-				  switch(Serial.parseInt()){
-					case 0:
-					  showServoHotPID();
-					  break;
-					case 1:
-					  showFanSpeedPID();
-					  break;
-				  }
-				  break;
+					setting->printSetting();
+					break;
 				case 54:
-				  setting.servoTickCount = Serial.parseInt();
-				  Serial.print("servoTickCount ");
-				  Serial.println(setting.servoTickCount);
-				  break;
-				case 55:
-				  setting.fanSpeedType = Serial.parseInt();
-				  Serial.print("fanSpeedType ");
-				  Serial.println(setting.fanSpeedType);
-				  break;
+					setting->data.servoTickCount = Serial.parseInt();
+					setting->printSetting();
+					break;
 				default:
-				  Serial.print("command '");
-				  Serial.print(command);
-				  Serial.println("' not found");
-				  break;*/
-			  }
+					Serial.print("command '");
+					Serial.print(cmd);
+					Serial.println("' not found");
+					break;
+			}
 		}
 		
 		void printStatus(){
