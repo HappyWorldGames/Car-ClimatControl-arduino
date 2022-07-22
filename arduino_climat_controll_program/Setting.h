@@ -137,7 +137,9 @@ class Setting {
 		}
 		int loadTempServoPos() {
 			Serial.println("Loaded Servo Pos");
-			return (int)EEPROM[1];
+			int pos = (int)EEPROM[1];
+			if(pos == 255) pos = 0;
+			return pos;
 		}
 		
 		void save() {
