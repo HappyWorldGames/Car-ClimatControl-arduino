@@ -43,4 +43,8 @@ class TempServoController {
 			Serial.println(servoPosValue);
 		}
 		
+		void tick() {
+			tempServo.tick();
+		}
+		
 };
