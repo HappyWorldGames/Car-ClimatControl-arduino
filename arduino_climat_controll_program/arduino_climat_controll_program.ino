@@ -10,6 +10,9 @@
 #include "controll/FanController.h"
 #include "controll/TempServoController.h"
 
+#include "TempAssist.h"
+#include "ServiceAssist.h"
+
 /*
 #include "controll/AirRecirculationButtonController.h"
 #include "controll/AirConditioningButtonController.h"
@@ -18,88 +21,45 @@
 AirRecirculationButtonController airRecirculationButtonController();
 AirConditioningButtonController airConditioningButtonController();
 */
-#include "TempAssist.h"
 
+boolean initEnd = false; 					// Чтобы не дерггать сервомотор в начале
 
-boolean initEnd = false; 					//Чтобы не дерггать сервомотор в начале
+Setting setting = Setting();				// Настройки
 
-Setting setting = Setting();
+TemperatureSensor tempSensor = TemperatureSensor(setting.pin.ONE_WIRE_PIN);														// Класс для получения температуры
 
-TemperatureSensor tempSensor = TemperatureSensor(setting.pin.ONE_WIRE_PIN);
-		
-FanController fanController = FanController(setting.pin.TRANSISTOR_PIN, setting.data.minSpeedFan, setting.data.alwaysOnFan);
-TempServoController tempServoController = TempServoController(setting.pin.TEMP_SERVO_PIN, setting);
+FanController fanController = FanController(setting.pin.TRANSISTOR_PIN, setting.data.minSpeedFan, setting.data.alwaysOnFan);	// Класс для управления вентилятором
+TempServoController tempServoController = TempServoController(setting.pin.TEMP_SERVO_PIN, setting);								// Класс для управления заслонкой тепло-холод
 
-TempAssist tempAssist = TempAssist(setting, tempSensor, fanController, tempServoController);
+Bind bind = Bind(setting, tempSensor, fanController, tempServoController);							// Класс для обработки комманд
+TempAssist tempAssist = TempAssist(setting, tempSensor, fanController, tempServoController);		// Класс для автоматики
+ServiceAssist serviceAssist = ServiceAssist();														// Класс для сервисного режима
 
 void setup() {
-  TCCR2B = 0b00000001; // x1
-  TCCR2A = 0b00000011; // fast pwm
+	TCCR2B = 0b00000001; // x1
+	TCCR2A = 0b00000011; // fast pwm
 /*
-  pinMode(RELAY_SERVO_SIGNAL_BUS, OUTPUT);
-  digitalWrite(RELAY_SERVO_SIGNAL_BUS, LOW);
-
-  Serial.begin(9600);
-  initControllButton();
-  initSensorTemperature();
-  initControllServo();
+	pinMode(RELAY_SERVO_SIGNAL_BUS, OUTPUT);
+	digitalWrite(RELAY_SERVO_SIGNAL_BUS, LOW);
 */
+	Serial.begin(9600);
+	//initControllButton();
 }
 
 void loop() {
-  /*
-  if (Serial.available()) {
-    int command = Serial.parseInt();
-    switch (command) {
-      case 403:
-        getVersion();
-        break;
-      case 404:
-        save();
-        break;
-      case 405:
-        resetSave();
-        break;
-      case 908:
-        getStatus();
-        break;
-      case 909: mode = 0;
-        Serial.println("Auto_Mode");
-        break;
-      case 910: mode = 1;
-        Serial.println("Manual_Mode");
-        break;
-      case 911: mode = 2;
-        Serial.println("Service_Mode");
-        break;
-      default: switch (mode) {
-          case 0:
-            serialAutoMode(command);
-            break;
-          case 1:
-            serialManualMode(command);
-            break;
-          case 2:
-            serialServiceMode(command);
-            break;
-        }
-        break;
-    }
-  }
-  switch (mode) {
-    case 0:
-      autoMode();
-      break;
-    case 1:
-      manualMode();
-      break;
-    case 2:
-      serviceMode();
-      break;
-  }
-
-  servoHot.tick();
-
+	bind.waitCommand();
+	
+	switch (setting.data.mode) {
+		case 0:
+			serviceAssist.loop();
+			break;
+		case 1:
+			tempAssist.loop();
+			break;
+	}
+	
+	tempServoController.tick();
+/*
   //Чтобы не дергать серво-мотор тепло-холод при включении
   if(!initEnd){
     static uint32_t ztmr;
