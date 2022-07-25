@@ -1,4 +1,4 @@
-package com.happyworldgames.carclimatcontroll
+package com.happyworldgames.carclimatecontrol
 
 import org.junit.Test
 

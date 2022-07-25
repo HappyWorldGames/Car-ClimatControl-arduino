@@ -1,4 +1,4 @@
-package com.happyworldgames.carclimatcontroll
+package com.happyworldgames.carclimatecontrol
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
