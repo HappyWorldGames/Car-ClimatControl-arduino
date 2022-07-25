@@ -15,10 +15,13 @@ class TempServoController {
 			
 			servoPos = setting.loadTempServoPos();
 			maxPosition =  setting.data.maxRotateServoTemp;
+			if(maxPosition == 255) maxPosition = 180;
+			if(servoPos > maxPosition) servoPos = 0;
 			
 			tempServo.setSpeed(50);   // ограничить скорость
 			tempServo.setAccel(0.3);    // установить ускорение (разгон и торможение)
 			
+			tempServo.write(servoPos);
 			tempServo.attach(tempServoPin, servoPos); //привязываем привод к порту
 			tempServo.smoothStart();
 		}

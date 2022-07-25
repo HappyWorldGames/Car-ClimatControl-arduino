@@ -37,13 +37,15 @@ class Setting {
 			boolean alwaysOnFan = true;						// Крутиться ли при 0
 			int minSpeedFan = 120;							// Минимальные значение шим при котором работает вентилятор
 			
-			int maxRotateServoTemp = 180;
+			byte maxRotateServoTemp = 180;
 			float deadRotateServoTemp = 1; 					// разница температуры от заданной при которой не будет работать заслонка тепло-холод
 			float servoHotPID[3] = { 14, 0.82, 0 };			// old value (15.2, 0,.82 0)
 			byte servoTickCount = 5;
 			
 			boolean manualFanSpeed = false;
 			boolean manualServoTemp = false;
+			
+			boolean detechServo = false;
 		} data;
 	  
 		Setting() {

@@ -47,15 +47,15 @@ class TempAssist {
 			tmr = millis();
 			servoTick++;
 			
-			int tempInCar = tempSensor->getTemp(0);
-			int tempInHeater = tempSensor->getTemp(1);
-			int tempOutCar = tempSensor->getTemp(2);
+			int tempInCar = tempSensor->getTemp(tempSensor->addressTempInCar);
+			int tempInHeater = tempSensor->getTemp(tempSensor->addressTempInHeater);
+			int tempOutCar = tempSensor->DEVICE_ERROR; //tempSensor->getTemp(2);
 			
 			// Проверка ручного режима вентилятора
 			if(!setting->data.manualFanSpeed) {
-				if (setting->data.wantTempInCar > tempInCar && tempInHeater < setting->data.tempMinStartWork){
+				if (setting->data.wantTempInCar > tempInCar && (tempInHeater < setting->data.tempMinStartWork && tempInHeater != tempSensor->DEVICE_ERROR)){
 					if(fanController->getFanSpeed() > 0) fanController->setFanSpeed(-1);
-				return;
+					return;
 				}
 				//Максимальные обороты вентилятора
 				int maxSpeedFan = setting->data.wantTempInCar < tempInCar ? 100 : map(tempInHeater, setting->data.tempMinStartWork, setting->data.tempMinStartWork + setting->data.tempMaxStartWork, 0, 100);
@@ -65,6 +65,7 @@ class TempAssist {
 				float diffTemp = abs(setting->data.wantTempInCar - tempInCar);
 				
 				//Вентилятор
+				diffTemp = constrain(diffTemp, 0, setting->data.diffSpeedFan);
 				int localSpeedFan = map(diffTemp, 0, setting->data.diffSpeedFan, 0, maxSpeedFan);
 				localSpeedFan = constrain(localSpeedFan, 0, maxSpeedFan);
 				fanController->setFanSpeed(localSpeedFan);
@@ -74,9 +75,11 @@ class TempAssist {
 			if(!setting->data.manualServoTemp && servoTick >= setting->data.servoTickCount){
 				servoTick = 0;
 				if(abs(setting->data.wantTempInCar - tempInCar) > setting->data.deadRotateServoTemp){
-					if (tempOutCar != 127.0) {
+					if (tempOutCar != tempSensor->DEVICE_ERROR) {
 						// Формула
 						int resFormula = ((setting->data.wantTempInCar - tempOutCar) * 100) / (tempInHeater - tempOutCar); // от 0 до 100 результат
+						// Если разница между заданной и в машине имеет разницу больше 6 градусов прибавить 10% в ту сторону куда нужно
+						// abs(setting->data.wantTempInCar - tempInCar);
 						resFormula = constrain(resFormula, 0, 100);
 						
 						tempServoController->setServoPos(resFormula);

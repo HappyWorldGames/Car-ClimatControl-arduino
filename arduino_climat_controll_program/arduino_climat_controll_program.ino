@@ -38,10 +38,10 @@ ServiceAssist serviceAssist = ServiceAssist();														// Класс для
 void setup() {
 	TCCR2B = 0b00000001; // x1
 	TCCR2A = 0b00000011; // fast pwm
-/*
-	pinMode(RELAY_SERVO_SIGNAL_BUS, OUTPUT);
-	digitalWrite(RELAY_SERVO_SIGNAL_BUS, LOW);
-*/
+
+	pinMode(setting.pin.RELAY_SERVO_SIGNAL_PIN, OUTPUT);
+	digitalWrite(setting.pin.RELAY_SERVO_SIGNAL_PIN, setting.data.detechServo ? LOW : HIGH); 
+
 	Serial.begin(9600);
 	//initControllButton();
 }
@@ -59,16 +59,16 @@ void loop() {
 	}
 	
 	tempServoController.tick();
-/*
-  //Чтобы не дергать серво-мотор тепло-холод при включении
-  if(!initEnd){
-    static uint32_t ztmr;
-    if (millis() - ztmr < 4000) return;
-    ztmr = millis();
-    digitalWrite(RELAY_SERVO_SIGNAL_BUS, HIGH);
 
-    rotateServoHot = -1;
-    
-    initEnd = true;
-  }*/
+	//Чтобы не дергать серво-мотор тепло-холод при включении
+	if(setting.data.detechServo && !initEnd){
+		static uint32_t ztmr;
+		if (millis() - ztmr < 4000) return;
+		ztmr = millis();
+		digitalWrite(setting.pin.RELAY_SERVO_SIGNAL_PIN, HIGH);
+		
+		//rotateServoHot = -1;
+		
+		initEnd = true;
+	}
 }

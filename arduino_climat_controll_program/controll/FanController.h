@@ -17,7 +17,7 @@ class FanController {
 		
 		void setFanSpeed(int speed, bool isServiceMode = false) {
 			if (!isServiceMode) {
-				if(!mAlwaysOnFan && speed == 0){
+				if(!mAlwaysOnFan && speed == 0 || speed < 0){
 					speed = 0;
 				} else {
 					speed = constrain(speed, 0, 100);

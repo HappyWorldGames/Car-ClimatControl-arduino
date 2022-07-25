@@ -15,8 +15,11 @@ class TemperatureSensor {
 		DallasTemperature sensor;
 		
 	public:
-		DeviceAddress addressTempInHeater = {0x28, 0xBC, 0x67, 0x94, 0x97, 0x02, 0x03, 0xEA};
-		DeviceAddress addressTempInCar = {0x28, 0xAA, 0x19, 0xC8, 0x52, 0x14, 0x01, 0x9A};
+		const int DEVICE_ERROR = -127;
+		
+		DeviceAddress addressTempInHeater = { 0x28, 0xBC, 0x67, 0x94, 0x97, 0x02, 0x03, 0xEA };
+		DeviceAddress addressTempInCar = { 0x28, 0xAA, 0x19, 0xC8, 0x52, 0x14, 0x01, 0x9A} ;
+		DeviceAddress addressTempOutCar = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 		
 		TemperatureSensor(int oneWirePin) {
 			oneWire = OneWire(oneWirePin);
@@ -55,7 +58,7 @@ class TemperatureSensor {
 		float getTemp(DeviceAddress deviceId) {
 			float tempTemp = sensor.getTempC(deviceId); // температура в градусах Цельсия
 			if (tempTemp > -50 && tempTemp < 120) return tempTemp;
-			return 127.0;
+			return DEVICE_ERROR;
 		}
 		
 };
