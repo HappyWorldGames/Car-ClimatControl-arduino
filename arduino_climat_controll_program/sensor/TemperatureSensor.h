@@ -9,7 +9,7 @@
 
 class TemperatureSensor {
 	private:
-		#define TEMPERATURE_PRECISION 12 // точность измерений (9 ... 12)
+		#define TEMPERATURE_PRECISION 11 // точность измерений (9 ... 12)
 		
 		OneWire oneWire; //Говорим к какому пину подключены датчики температуры
 		DallasTemperature sensor;
@@ -50,7 +50,7 @@ class TemperatureSensor {
 					break;
 				case 2:
 					Serial.print("outcar=");
-					Serial.println(getTemp(addressTempInHeater));
+					Serial.println(getTemp(addressTempOutCar));
 					break;
 			}
 		}

@@ -43,6 +43,7 @@ void setup() {
 	digitalWrite(setting.pin.RELAY_SERVO_SIGNAL_PIN, setting.data.detechServo ? LOW : HIGH); 
 
 	Serial.begin(9600);
+	Serial.print("TEst");
 	//initControllButton();
 }
 

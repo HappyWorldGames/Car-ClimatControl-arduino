@@ -51,6 +51,10 @@ class TempAssist {
 			int tempInHeater = tempSensor->getTemp(tempSensor->addressTempInHeater);
 			int tempOutCar = tempSensor->DEVICE_ERROR; //tempSensor->getTemp(2);
 			
+			tempSensor->printTemp(0);
+			tempSensor->printTemp(1);
+			tempSensor->printTemp(2);
+			
 			// Проверка ручного режима вентилятора
 			if(!setting->data.manualFanSpeed) {
 				if (setting->data.wantTempInCar > tempInCar && (tempInHeater < setting->data.tempMinStartWork && tempInHeater != tempSensor->DEVICE_ERROR)){
