@@ -3,11 +3,12 @@
  */
 #pragma once
 
+#include <Arduino.h>
 #include <EEPROM.h>
 
 class Setting {
 	private:
-		#define VERSION "2022.07.21" // Date format yyyy.mm.dd
+		#define VERSION "2022.07.26" // Date format yyyy.mm.dd
 		
 	public:
 		struct {
@@ -60,21 +61,30 @@ class Setting {
 			
 			printMode();
 			
-			Serial.println("AUTO_MODE_UPDATE_TIME=" + data.AUTO_MODE_UPDATE_TIME);
+			Serial.print("AUTO_MODE_UPDATE_TIME=");
+			Serial.println(data.AUTO_MODE_UPDATE_TIME);
 			
-			Serial.println("tempMinStartWork=" + data.tempMinStartWork);
-			Serial.println("tempMaxStartWork=" + data.tempMaxStartWork);
-			Serial.println("diffSpeedFan=" + data.diffSpeedFan);
+			Serial.print("tempMinStartWork=");
+			Serial.println(data.tempMinStartWork);
+			Serial.print("tempMaxStartWork=");
+			Serial.println(data.tempMaxStartWork);
+			Serial.print("diffSpeedFan=");
+			Serial.println(data.diffSpeedFan);
 			
 			printWantTempInCar();
 			
-			Serial.println("alwaysOnFan=" + data.alwaysOnFan);
-			Serial.println("minSpeedFan=" + data.minSpeedFan);
+			Serial.print("alwaysOnFan=");
+			Serial.println(data.alwaysOnFan);
+			Serial.print("minSpeedFan=");
+			Serial.println(data.minSpeedFan);
 			
-			Serial.println("maxRotateServoTemp=" + data.maxRotateServoTemp);
-			Serial.println("deadRotateServoTemp=" + String(data.deadRotateServoTemp, 2));
+			Serial.print("maxRotateServoTemp=");
+			Serial.println(data.maxRotateServoTemp);
+			Serial.print("deadRotateServoTemp=");
+			Serial.println(data.deadRotateServoTemp);
+			
 			Serial.println("servoHotPID=" + String(data.servoHotPID[0], 2) + ' ' + String(data.servoHotPID[1], 2) + ' ' + String(data.servoHotPID[2], 2));
-			Serial.println("servoTickCount=" + data.servoTickCount);
+			Serial.println("servoTickCount=" + String(data.servoTickCount));
 			
 			printManualFanSpeed();
 			printManualServoTemp();
@@ -85,7 +95,7 @@ class Setting {
 			Serial.println(VERSION);
 		}
 		void printMode() {
-			Serial.println("mode=" + data.mode);
+			Serial.println("mode=" + String(data.mode));
 		}
 		
 		void printWantTempInCar() {
@@ -93,10 +103,10 @@ class Setting {
 		}
 		
 		void printManualFanSpeed() {
-			Serial.println("manualFanSpeed=" + data.manualFanSpeed);
+			Serial.println("manualFanSpeed=" + String(data.manualFanSpeed));
 		}
 		void printManualServoTemp() {
-			Serial.println("manualServoTemp=" + data.manualServoTemp);
+			Serial.println("manualServoTemp=" + String(data.manualServoTemp));
 		}
 		/*
 		*	End Print Functions

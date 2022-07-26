@@ -21,7 +21,7 @@ class TempAssist {
 		TempServoController* tempServoController = NULL;
 		
 	public:
-		TempAssist(Setting setting, TemperatureSensor tempSensor, FanController fanController, TempServoController tempServoController) {
+		TempAssist(Setting& setting, TemperatureSensor& tempSensor, FanController& fanController, TempServoController& tempServoController) {
 			this->setting = &setting;
 			
 			servoTempPID = &GyverPID(setting.data.servoHotPID[0], setting.data.servoHotPID[1], setting.data.servoHotPID[2]);

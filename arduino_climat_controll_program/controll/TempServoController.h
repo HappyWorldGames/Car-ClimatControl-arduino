@@ -10,7 +10,7 @@ class TempServoController {
 		ServoSmooth tempServo; //контроль заслонки тепло-хoлод
 		
 	public:
-		TempServoController(int tempServoPin, Setting setting = Setting()) {
+		TempServoController(int tempServoPin, Setting& setting) {
 			this -> setting = &setting;
 			
 			servoPos = setting.loadTempServoPos();
@@ -23,7 +23,7 @@ class TempServoController {
 			
 			tempServo.write(servoPos);
 			tempServo.attach(tempServoPin, servoPos); //привязываем привод к порту
-			tempServo.smoothStart();
+			//tempServo.smoothStart();
 		}
 		
 		void setServoPos(int position, bool isServiceMode = false) {

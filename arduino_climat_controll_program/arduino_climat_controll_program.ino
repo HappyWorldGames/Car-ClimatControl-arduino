@@ -40,10 +40,10 @@ void setup() {
 	TCCR2A = 0b00000011; // fast pwm
 
 	pinMode(setting.pin.RELAY_SERVO_SIGNAL_PIN, OUTPUT);
-	digitalWrite(setting.pin.RELAY_SERVO_SIGNAL_PIN, setting.data.detechServo ? LOW : HIGH); 
+	digitalWrite(setting.pin.RELAY_SERVO_SIGNAL_PIN, setting.data.detechServo ? LOW : HIGH);
 
 	Serial.begin(9600);
-	Serial.print("TEst");
+	Serial.println("Start");
 	//initControllButton();
 }
 

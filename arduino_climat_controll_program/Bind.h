@@ -205,7 +205,7 @@ class Bind {
 		
 	public:
 		
-		Bind(Setting setting, TemperatureSensor tempSensor, FanController fanController, TempServoController tempServoController) {
+		Bind(Setting& setting, TemperatureSensor& tempSensor, FanController& fanController, TempServoController& tempServoController) {
 			this->setting = &setting;
 			
 			this->tempSensor = &tempSensor;
