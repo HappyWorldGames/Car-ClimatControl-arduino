@@ -88,6 +88,8 @@ class Setting {
 			
 			printManualFanSpeed();
 			printManualServoTemp();
+			
+			Serial.println("detechServo=" + String(data.detechServo));
 		}
 		
 		void printVersion() {
