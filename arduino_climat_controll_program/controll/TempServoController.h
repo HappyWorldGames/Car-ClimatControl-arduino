@@ -27,6 +27,8 @@ class TempServoController {
 		}
 		
 		void setServoPos(int position, bool isServiceMode = false) {
+			if (servoPos == position && !isServiceMode) return;
+			
 			if (!isServiceMode) {
 				position = constrain(position, 0, 100);
 				position = map(position, 0, 100, 0, maxPosition);
