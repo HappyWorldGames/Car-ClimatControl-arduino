@@ -1,2 +1,2 @@
 # ClimatControll
-Climat Controll for Car on Arduino
+Climate control for a car on an arduino
